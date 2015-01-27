@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "/spring-beans.dtd">
+<beans>
+
+
+	<bean id="quartzJob" autowire="byName" class="demo.TaskJob"></bean>
+	<bean id="synBlindAreaJobDetail"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="concurrent" value="false" />
+		<property name="targetObject" ref="quartzJob" />
+		<property name="targetMethod" value="SayHello" />
+	</bean>
+	<bean id="synBlindAreaTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="synBlindAreaJobDetail" />
+		<property name="cronExpression" value="0 0/1 * * * ?" />
+	</bean>
+	<bean id="scheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="synBlindAreaTrigger" />
+			</list>
+		</property>
+	</bean>
+
+
+
+
+
+</beans>
